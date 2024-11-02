@@ -28,8 +28,8 @@ class GitHubService:
         except Exception as e:
             raise HTTPException(status_code=500, detail=f"An unexpected error occurred: {e}")
 
-async def main():
-    gitdata = GitHubService()
-    await gitdata.fetch_repository_contents('https://github.com/HurmakR/BB_Rosan')
-
-asyncio.run(main())
+#async def main():
+#    gitdata = GitHubService()
+#    await gitdata.fetch_repository_contents('https://github.com/HurmakR/BB_Rosan')
+#
+#asyncio.run(main())
