@@ -40,7 +40,7 @@ class GitHubService:
 
     async def get_repository_contents(self, repo_url: str, path: str = "") -> List[Dict[str, str]]:
         all_files = []
-        readable_extensions = ('.py', '.js', '.txt', '.json', '.html', '.yml', 'md')
+        readable_extensions = ('.py', '.js', '.txt', '.json', '.html', '.yml', 'md', 'css')
         try:
             # Get the default branch of the repository
             default_branch = await self.get_default_branch(repo_url)

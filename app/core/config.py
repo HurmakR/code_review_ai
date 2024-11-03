@@ -7,7 +7,7 @@ load_dotenv()
 class Settings(BaseSettings):
     openai_api_key: Optional[str] = None
     github_token: Optional[str] = None
-
+    redis_url: str = "redis://localhost:6379"
     class Config:
         env_file = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
 
