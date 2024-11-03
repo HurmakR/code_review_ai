@@ -40,6 +40,7 @@ class GitHubService:
 
     async def get_repository_contents(self, repo_url: str, path: str = "") -> List[Dict[str, str]]:
         all_files = []
+        readable_extensions = ('.py', '.js', '.txt', '.json', '.html', '.yml', 'md')
         try:
             # Get the default branch of the repository
             default_branch = await self.get_default_branch(repo_url)
@@ -49,19 +50,17 @@ class GitHubService:
                                             headers=self.headers)
                 response.raise_for_status()
                 contents = response.json()
-
                 for item in contents:
-                    if item['type'] == 'file':
-                        # Append files to the result list
+                    if item['type'] == 'file' and any(item['name'].endswith(ext) for ext in readable_extensions):
+                        # Append files with downloadable link to the result list if they have a readable extension
                         all_files.append({
                             'name': item['path'],
-                            'url': item['html_url']
+                            'url': f'https://raw.githubusercontent.com/{repo_url}/refs/heads/{default_branch}/{item['path']}'
                         })
                     elif item['type'] == 'dir' and item['name'] != '__pycache__':
                         # Recursively fetch the contents of subdirectories, excluding __pycache__
                         subdir_files = await self.get_repository_contents(repo_url, item['path'])
                         all_files.extend(subdir_files)
-
                 return all_files
 
         except httpx.HTTPStatusError as e:
@@ -77,17 +76,3 @@ class GitHubService:
                 detail="An unexpected error occurred while fetching repository contents."
             )
 
-    def filter_readable_files(self, contents: List[Dict[str, str]]) -> List[Dict[str, str]]:
-        readable_extensions = ['.py', '.js', '.txt', '.json', '.html', '.yml']
-        filtered_files = []
-
-        for item in contents:
-            if any(item['name'].endswith(ext) for ext in readable_extensions):
-                filtered_files.append(item)
-
-        return filtered_files
-
-# Example usage (ensure you run this within an async context)
-# service = GitHubService()
-# result = await service.get_repository_contents('username/repo-name')
-# print(result)
