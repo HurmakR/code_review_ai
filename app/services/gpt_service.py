@@ -69,7 +69,7 @@ class GPTService:
                     logger.info(f"Fetching content for file: {file['name']}")
                     response = await client.get(file['url'])
                     response.raise_for_status()
-                    file_contents[file['name']] = response.text
+                    file_contents[file['name']] = response.text if response.text else "empty file"
                     logger.debug(f"Content for {file['name']} fetched successfully.")
                 except httpx.HTTPStatusError as e:
                     logger.error(f"Error fetching file {file['name']}: {e}")
