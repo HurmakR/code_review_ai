@@ -37,11 +37,11 @@ class GPTService:
                     {"role": "user", "content": prompt}
                 ]
             )
-            logger.info("Received response from OpenAI API.")
+            logger.info(f"Received response from OpenAI API.{response}")
             if response.choices[0].message.content is not None:
+                result = json.loads(response.choices[0].message.content)
+                logger.debug(f"Decoded response: {result}")
                 try:
-                    result = json.loads(response.choices[0].message.content)
-                    logger.debug(f"Decoded response: {result}")
                     await cache_service.set(cache_key, json.dumps(result))
                     logger.info("Result cached successfully.")
                     return result
