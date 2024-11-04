@@ -63,9 +63,9 @@ project-root/
    - Set up Redis for caching.
 
 4. **Access the Application**:
-   The FastAPI application will be available at:
+   The endpoint will be available at:
    ```
-   http://localhost:8000
+   http://localhost:8000/review/
    ```
 
 ## Usage
@@ -81,7 +81,10 @@ project-root/
 - **Response**:
   ```json
   {
-    "found_files": ["file1.py", "file2.py"],
+    "found_files": [
+      "file1.py",   
+      "file2.py"
+    ],
     "comments": "Detailed code review comments.",
     "rating": "4 out of 5",
     "conclusion": "Overall, the code quality is satisfactory with minor improvements suggested."
